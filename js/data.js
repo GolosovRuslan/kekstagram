@@ -1,6 +1,4 @@
-import { getRandomPositiveInteger } from "./utils.js";
-import { getUniqueRandomId } from "./utils.js";
-import { getRandomArrayElements } from "./utils.js";
+import { getRandomPositiveInteger, getUniqueRandomId, getRandomArrayElements } from "./utils.js";
 
 const COMMENT_LINES = [
     'Всё отлично!',
@@ -18,19 +16,19 @@ const NAMES = [
     'Юлия',
 ];
 
-const PICTURE_COUNT = 25;
+const maxId = 25;
 
 const createPicture = () => {
-    const uniqueId = getUniqueRandomId(PICTURE_COUNT);
+    const uniqueId = getUniqueRandomId(maxId);
     return {
         id: uniqueId,
-        avatar: "photos/" + uniqueId + ".jpg",
-        message: getRandomArrayElements(COMMENT_LINES),
+        url: "photos/" + uniqueId + ".jpg",
+        comments: getRandomArrayElements(COMMENT_LINES),
         name: getRandomArrayElements(NAMES),
         likes: getRandomPositiveInteger(15, 250)
     };
 };
 
-const getGeneratePhoto = () => Array.from({ length: PICTURE_COUNT }, createPicture);
+const getGeneratePhoto = () => Array.from({ length: maxId }, createPicture);
 
 export { getGeneratePhoto };
