@@ -16,6 +16,20 @@ const NAMES = [
     'Юлия',
 ];
 
+const DESCRIPTIONS = [
+  'Летний чил на югах. #тай #отдых #лето #чил #travel #travelgram #summergram #chill',
+  'Тестим новую камеру! #camera #test #new #newcameratest #pic #photo #instaphoto',
+  'Затусили с друзьями на море #laptevsea #north #northeastpassage',
+  'Как же круто тут кормят #food #foodgram #instafood #delicious #yummy',
+  'Отдыхаем... #chill #relax #group #photo',
+  'Цените каждое мгновенье. Цените тех, кто рядом с вами и отгоняйте все сомненья. Не обижайте всех словами......',
+  'Вот это тачка! #wow #car #carwow #drive',
+  '#fun #party #cool #young',
+  'Господи, это такая милота, я сейчас умру от нежности, у меня закшалил мимимиметр',
+  'Хорошо, когда в жизни есть #друзья, которые вместе со мной могут зайти в #барнарубинштейна и бахнуть #пивка',
+  'Норм',
+];
+
 const maxId = 25;
 
 const createPicture = () => {
@@ -25,7 +39,8 @@ const createPicture = () => {
         url: "photos/" + uniqueId + ".jpg",
         comments: getRandomArrayElements(COMMENT_LINES),
         name: getRandomArrayElements(NAMES),
-        likes: getRandomPositiveInteger(15, 250)
+        likes: getRandomPositiveInteger(15, 250),
+        descriptions: getRandomArrayElements(DESCRIPTIONS)
     };
 };
 
