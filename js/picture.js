@@ -1,4 +1,5 @@
 import { getGeneratePhoto } from "./data.js";
+import { showBigPicture } from "./big-picture.js";
 
 const picturesList = document.querySelector('.pictures');
 const pictureTemplate = document.querySelector('#picture').content;
@@ -8,11 +9,16 @@ const fragment = document.createDocumentFragment();
 
 const newPictures = getGeneratePhoto();
 
-newPictures.forEach(({ url, likes, comments }) => {
+newPictures.forEach(({ url, likes, comments, descriptions, name }) => {
+
     const newPictureItem = pictureTemplateItem.cloneNode(true);
+    newPictureItem.addEventListener('click', function () {
+        showBigPicture({ url, likes, comments, descriptions, name });
+    });
     newPictureItem.querySelector('.picture__img').src = url;
+    newPictureItem.querySelector('.picture__img').alt = name;
     newPictureItem.querySelector('.picture__likes').textContent = likes;
-    newPictureItem.querySelector('.picture__comments').textContent = comments;
+
     fragment.append(newPictureItem);
 });
 
