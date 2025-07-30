@@ -32,13 +32,18 @@ const DESCRIPTIONS = [
 
 const maxId = 25;
 
+const createCommentObject = () => ({
+    avatar: `img/avatar-${getRandomPositiveInteger(1, 6)}.svg`,
+    message: getRandomArrayElements(COMMENT_LINES),
+    name: getRandomArrayElements(NAMES),
+});
+
 const createPicture = () => {
     const uniqueId = getUniqueRandomId(maxId);
     return {
         id: uniqueId,
         url: "photos/" + uniqueId + ".jpg",
-        comments: getRandomArrayElements(COMMENT_LINES),
-        name: getRandomArrayElements(NAMES),
+        comments: Array.from({ length: getRandomPositiveInteger(1, 4) }, createCommentObject),
         likes: getRandomPositiveInteger(15, 250),
         descriptions: getRandomArrayElements(DESCRIPTIONS)
     };
