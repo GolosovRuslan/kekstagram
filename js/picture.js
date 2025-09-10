@@ -1,27 +1,35 @@
-import { getGeneratePhoto } from "./data.js";
-import { showBigPicture } from "./big-picture.js";
+import { showBigPicture } from './big-picture.js';
 
-const picturesList = document.querySelector('.pictures');
-const pictureTemplate = document.querySelector('#picture').content;
-const pictureTemplateItem = pictureTemplate.querySelector('.picture');
+const pictureTemplate = document
+  .querySelector('#picture')
+  .content.querySelector('.picture');
+const container = document.querySelector('.pictures');
 
-const fragment = document.createDocumentFragment();
+const createPicture = (data) => {
+  const { comments, description, likes, url } = data;
+  const picture = pictureTemplate.cloneNode(true);
 
-const newPictures = getGeneratePhoto();
+  picture.querySelector('.picture__img').src = url;
+  picture.querySelector('.picture__img').alt = description;
+  picture.querySelector('.picture__comments').textContent = comments.length;
+  picture.querySelector('.picture__likes').textContent = likes;
 
-newPictures.forEach(({ url, likes, comments, descriptions, name }) => {
+  picture.addEventListener('click', () => {
+    showBigPicture(data);
+  });
 
-    const newPictureItem = pictureTemplateItem.cloneNode(true);
-    newPictureItem.addEventListener('click', function () {
-        showBigPicture({ url, likes, comments, descriptions, name });
-    });
-    newPictureItem.querySelector('.picture__img').src = url;
-    newPictureItem.querySelector('.picture__img').alt = name;
-    newPictureItem.querySelector('.picture__likes').textContent = likes;
+  return picture;
+};
 
-    fragment.append(newPictureItem);
-});
+const renderPictures = (pictures) => {
+  container.querySelectorAll('.picture').forEach((element) => element.remove());
+  const fragment = document.createDocumentFragment();
+  pictures.forEach((picture) => {
+    const pictureElement = createPicture(picture);
+    fragment.append(pictureElement);
+  });
 
-const pictures = picturesList.append(fragment);
+  container.append(fragment);
+};
 
-export { pictures };
+export { renderPictures };

@@ -1,3 +1,6 @@
+import { resetScale } from './scale.js';
+import { resetEffects } from './effect.js';
+
 const form = document.querySelector('.img-upload__form');
 const overlay = document.querySelector('.img-upload__overlay');
 const body = document.querySelector('body');
@@ -5,6 +8,7 @@ const cancelButton = document.querySelector('#upload-cancel');
 const fileField = document.querySelector('#upload-file');
 const hashtagField = document.querySelector('.text__hashtags');
 const commentField = document.querySelector('.text__description');
+const submitButton = form.querySelector('.img-upload__submit');
 
 const MAX_HASHTAG_COUNT = 5;
 const MIN_HASHTAG_LENGTH = 2;
@@ -25,6 +29,8 @@ const showModal = () => {
 
 const hideModal = () => {
   form.reset();
+  resetScale();
+  resetEffects();
   pristine.reset();
   overlay.classList.add('hidden');
   body.classList.remove('modal-open');
@@ -75,17 +81,36 @@ const validateTags = (value) => {
   return hasValidCount(tags) && hasUniqueTags(tags) && tags.every(isValidTag);
 };
 
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = 'Отправляю...';
+};
+
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = 'Опубликовать';
+};
+
 pristine.addValidator(
   hashtagField,
   validateTags,
   'Неправильно заполнены хэштеги'
 );
 
-const onFormSubmit = (evt) => {
-  evt.preventDefault();
-  pristine.validate();
+const setOnFormSubmit = (cb) => {
+  form.addEventListener('submit', async (evt) => {
+    evt.preventDefault();
+    const isValid = pristine.validate();
+
+    if (isValid) {
+      blockSubmitButton();
+      await cb(new FormData(form));
+      unblockSubmitButton();
+    }
+  });
 };
 
 fileField.addEventListener('change', onFileInputChange);
 cancelButton.addEventListener('click', onCancelButtonClick);
-form.addEventListener('submit', onFormSubmit);
+
+export { setOnFormSubmit, hideModal };
